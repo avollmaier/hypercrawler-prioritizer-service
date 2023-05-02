@@ -10,7 +10,7 @@ env:
   OWNER: ${{github.repository_owner}}
   REGISTRY: ghcr.io
   APP_REPO: ${{ github.event.repository.name }}
-  DEPLOY_REPO: deployment
+  DEPLOY_REPO: hypercrawler-deployment
   VERSION: ${{ github.sha }}
 
 jobs:
