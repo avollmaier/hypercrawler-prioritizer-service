@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "prioritizer-service"
+  description: "\"This is the prioritizer-service for the hypercrawler project!🚀\""
+  annotations:
+    github.com/project-slug: avollmaier/hypercrawler-prioritizer-service
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: service
+  lifecycle: experimental
+  owner: "group:default/avollmaier"
