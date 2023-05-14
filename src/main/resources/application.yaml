@@ -8,6 +8,23 @@ server:
       max: 50
       min-spare: 5
 
+hypercrawler:
+  prioritizer-service:
+    metric:
+      basePriority: 10
+      thresholds:
+        - days: 7
+          multiplier: 1.0
+        - days: 30
+          multiplier: 0.8
+        - days: 90
+          multiplier: 0.5
+        - days: 180
+          multiplier: 0.3
+        - days: 365
+          multiplier: 0.1
+
+
 spring:
   application:
     name: prioritizer-service
@@ -32,8 +49,10 @@ spring:
         prioritize-in-0:
           destination: address-supplied
           group: ${spring.application.name}
+        prioritize-out-0:
+          destination: address-prioritized
   rabbitmq:
-    host: localhost
+    host: hypercrawler-rabbitmq
     port: 5672
     username: admin
     password: admin
