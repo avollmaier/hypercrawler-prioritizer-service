@@ -26,6 +26,7 @@ public class PriorityClassifier {
 
         for (Evaluator evaluator : evaluators) {
             BigDecimal evaluatePriority = evaluator.evaluatePriority(address);
+            log.error("Priority for url: {} is: {}", address, evaluatePriority);
             priority = priority.multiply(evaluatePriority);
         }
 

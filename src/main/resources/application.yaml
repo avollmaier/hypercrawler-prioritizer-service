@@ -13,16 +13,18 @@ hypercrawler:
     metric:
       basePriority: 10
       thresholds:
-        - days: 7
-          multiplier: 1.0
-        - days: 30
-          multiplier: 0.8
-        - days: 90
-          multiplier: 0.5
-        - days: 180
-          multiplier: 0.3
         - days: 365
           multiplier: 0.1
+        - days: 180
+          multiplier: 0.2
+        - days: 90
+          multiplier: 0.4
+        - days: 30
+          multiplier: 0.6
+        - days: 7
+          multiplier: 0.8
+        - days: 1
+          multiplier: 1.0
 
 
 spring:

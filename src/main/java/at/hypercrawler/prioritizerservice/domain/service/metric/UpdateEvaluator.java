@@ -32,8 +32,9 @@ public class UpdateEvaluator implements Evaluator {
             log.info("Difference in days since now for url: {} is: {}", address, differenceInDays);
 
             for (Threshold threshold : metricProperties.getThresholds()) {
-                if (differenceInDays < threshold.days()) {
-                    return threshold.multiplier();
+                log.info(differenceInDays + " " + threshold.getDays());
+                if (differenceInDays >= threshold.getDays()) {
+                    return threshold.getMultiplier();
                 }
             }
 
