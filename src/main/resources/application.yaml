@@ -12,7 +12,7 @@ hypercrawler:
   prioritizer-service:
     metric:
       basePriority: 10
-      thresholds:
+      update-thresholds:
         - days: 365
           multiplier: 0.1
         - days: 180

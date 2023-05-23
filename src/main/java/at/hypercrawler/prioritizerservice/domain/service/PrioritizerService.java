@@ -1,13 +1,13 @@
 package at.hypercrawler.prioritizerservice.domain.service;
 
-import at.hypercrawler.prioritizerservice.domain.service.metric.PriorityClassifier;
+import java.net.URL;
+
 import org.springframework.stereotype.Service;
 
-import java.net.URL;
+import at.hypercrawler.prioritizerservice.domain.service.metric.PriorityClassifier;
 
 @Service
 public class PrioritizerService {
-
     private final PriorityClassifier priorityClassifier;
 
     public PrioritizerService(PriorityClassifier priorityClassifier) {
