@@ -1,10 +1,10 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: "prioritizer-service"
-  description: "\"This is the prioritizer-service for the hypercrawler project!🚀\""
+  name: "frontier-service"
+  description: "\"This is the frontier-service for the hypercrawler project!🚀\""
   annotations:
-    github.com/project-slug: avollmaier/hypercrawler-prioritizer-service
+    github.com/project-slug: avollmaier/hypercrawler-frontier-service
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service

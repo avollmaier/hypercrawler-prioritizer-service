@@ -1,6 +1,6 @@
-package at.hypercrawler.prioritizerservice.event;
+package at.hypercrawler.frontierservice.event;
 
-import at.hypercrawler.prioritizerservice.domain.service.PrioritizerService;
+import at.hypercrawler.frontierservice.domain.service.PrioritizerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

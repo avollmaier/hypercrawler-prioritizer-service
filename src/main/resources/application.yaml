@@ -9,7 +9,7 @@ server:
       min-spare: 5
 
 hypercrawler:
-  prioritizer-service:
+  frontier-service:
     metric:
       basePriority: 10
       update-thresholds:
@@ -29,7 +29,7 @@ hypercrawler:
 
 spring:
   application:
-    name: prioritizer-service
+    name: frontier-service
   lifecycle:
     timeout-per-shutdown-phase: 15s
   config:

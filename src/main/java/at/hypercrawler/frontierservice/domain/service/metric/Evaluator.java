@@ -1,4 +1,4 @@
-package at.hypercrawler.prioritizerservice.domain.service.metric;
+package at.hypercrawler.frontierservice.domain.service.metric;
 
 import java.math.BigDecimal;
 import java.net.URL;

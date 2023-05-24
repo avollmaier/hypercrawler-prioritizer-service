@@ -1,4 +1,4 @@
-package at.hypercrawler.prioritizerservice.domain.model;
+package at.hypercrawler.frontierservice.domain.model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

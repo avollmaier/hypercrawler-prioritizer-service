@@ -1,4 +1,4 @@
-# Prioritizer Service
+# Frontier Service
 
 This is the edge-service for the hypercrawler project!🚀
 
@@ -15,5 +15,5 @@ This is the edge-service for the hypercrawler project!🚀
 After building the application, you can also run it from the Java CLI:
 
 ```bash
-java -jar build/libs/prioritizer-service-0.0.1-SNAPSHOT.jar
+java -jar build/libs/frontier-service-0.0.1-SNAPSHOT.jar
 ```

@@ -1,12 +1,12 @@
-package at.hypercrawler.prioritizerservice;
+package at.hypercrawler.frontierservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PrioritizerApplication {
+public class FrontierApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(PrioritizerApplication.class, args);
+    SpringApplication.run(FrontierApplication.class, args);
   }
 }

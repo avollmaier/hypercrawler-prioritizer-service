@@ -8,7 +8,7 @@ if os.name == "nt":
 # Build
 custom_build(
     # Name of the container image
-    ref = 'prioritizer-service',
+    ref = 'frontier-service',
     # Command to build the container image
     command = gradlew + ' bootBuildImage --imageName ' + expected_ref,
 
@@ -23,4 +23,4 @@ custom_build(
 k8s_yaml(kustomize('k8s'))
 
 # Manage
-k8s_resource('prioritizer-service', port_forwards=['9004:9004'])
+k8s_resource('frontier-service', port_forwards=['9004:9004'])

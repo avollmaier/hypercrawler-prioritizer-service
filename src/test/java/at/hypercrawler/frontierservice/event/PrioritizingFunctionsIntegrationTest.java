@@ -1,4 +1,4 @@
-package at.hypercrawler.prioritizerservice.event;
+package at.hypercrawler.frontierservice.event;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

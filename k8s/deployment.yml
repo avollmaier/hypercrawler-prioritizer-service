@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prioritizer-service
+  name: frontier-service
   labels:
-    app: prioritizer-service
+    app: frontier-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prioritizer-service
+      app: frontier-service
   template:
     metadata:
       labels:
-        app: prioritizer-service
+        app: frontier-service
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/path: /actuator/prometheus
         prometheus.io/port: "9004"
     spec:
       containers:
-        - name: prioritizer-service
-          image: prioritizer-service
+        - name: frontier-service
+          image: frontier-service
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
