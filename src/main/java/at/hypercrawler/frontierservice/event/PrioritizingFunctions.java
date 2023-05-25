@@ -22,10 +22,13 @@ public class PrioritizingFunctions {
 
     @Bean
     public Function<Flux<AddressSuppliedMessage>, Flux<Message<AddressPrioritizedMessage>>> prioritize() {
-        return addressSupplyMessageFlux -> addressSupplyMessageFlux.map(addressSuppliedMessage -> {
+        return addressSupplyMessageFlux -> addressSupplyMessageFlux.mapNotNull(addressSuppliedMessage -> {
             log.info("Prioritizing address {}", addressSuppliedMessage.address());
 
-            final int priority = prioritizerService.evaluatePriority(addressSuppliedMessage.address());
+            if (!prioritizerService.isCrawlerRunning(addressSuppliedMessage.crawlerId())) {
+                return null;
+            }
+            int priority = prioritizerService.evaluatePriority(addressSuppliedMessage.address());
             return MessageBuilder.withPayload(new AddressPrioritizedMessage(
                     addressSuppliedMessage.crawlerId(),
                     addressSuppliedMessage.address()
