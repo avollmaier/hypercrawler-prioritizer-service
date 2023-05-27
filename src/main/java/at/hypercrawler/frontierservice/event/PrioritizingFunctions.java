@@ -28,11 +28,12 @@ public class PrioritizingFunctions {
             if (!prioritizerService.isCrawlerRunning(addressSuppliedMessage.crawlerId())) {
                 return null;
             }
-            int priority = prioritizerService.evaluatePriority(addressSuppliedMessage.address());
+
+           // int priority = prioritizerService.evaluatePriority(addressSuppliedMessage.address());
             return MessageBuilder.withPayload(new AddressPrioritizedMessage(
                     addressSuppliedMessage.crawlerId(),
                     addressSuppliedMessage.address()
-            )).setHeader("priority", priority).build();
+            )).setHeader("priority", 10).build();
         });
     }
 

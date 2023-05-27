@@ -10,9 +10,11 @@ server:
 
 hypercrawler:
   frontier-service:
+    client:
+      manager-service-uri: ${MANAGER_SERVICE_URI:http://localhost:9003}
     metric:
       basePriority: 10
-      update-thresholds:
+      thresholds:
         - days: 365
           multiplier: 0.1
         - days: 180
@@ -88,12 +90,3 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${DISCOVERY_SERVICE_URL:http://localhost:9000/eureka/}
-  instance:
-    lease-expiration-duration-in-seconds: 3
-    lease-renewal-interval-in-seconds: 1
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${random.value}

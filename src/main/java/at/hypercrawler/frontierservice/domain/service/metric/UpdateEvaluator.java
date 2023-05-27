@@ -1,13 +1,13 @@
 package at.hypercrawler.frontierservice.domain.service.metric;
 
-import at.hypercrawler.frontierservice.domain.config.FrontierConfiguration;
 import at.hypercrawler.frontierservice.domain.config.MetricProperties;
 import at.hypercrawler.frontierservice.domain.model.Threshold;
-import at.hypercrawler.frontierservice.domain.service.metric.Evaluator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -31,6 +31,7 @@ public class UpdateEvaluator implements Evaluator {
       HttpURLConnection connection = (HttpURLConnection) address.openConnection();
       long lastModified = connection.getLastModified();
 
+
       long differenceInDays = calculateTimeDifferenceInDays(lastModified);
       log.info("Difference in days since now for url: {} is: {}", address, differenceInDays);
 
@@ -42,7 +43,7 @@ public class UpdateEvaluator implements Evaluator {
 
       return BigDecimal.ONE;
 
-    } catch (Exception e) {
+    } catch (IOException e) {
       log.error("Error while evaluating update priority for address: {}", address, e);
     }
 
@@ -53,7 +54,7 @@ public class UpdateEvaluator implements Evaluator {
     Instant instant = Instant.ofEpochMilli(lastModifiedMillis);
     LocalDateTime lastModifiedDateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
 
-    //TODO call the crawler-service to get the last crawled date and calculate the difference in days
+    log.info("Last modified date time was: {}", lastModifiedDateTime);
 
     LocalDateTime currentDateTime = LocalDateTime.now(ZoneOffset.UTC);
     return currentDateTime.toLocalDate().toEpochDay() - lastModifiedDateTime.toLocalDate().toEpochDay();
