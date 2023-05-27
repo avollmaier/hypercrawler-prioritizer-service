@@ -15,10 +15,5 @@ public class FrontierApplication {
     SpringApplication.run(FrontierApplication.class, args);
   }
 
-  @Bean
-  @LoadBalanced
-  public WebClient webClient(){
 
-    return WebClient.builder().build();
-  }
 }
