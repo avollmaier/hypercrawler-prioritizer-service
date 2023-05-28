@@ -2,12 +2,17 @@ package at.hypercrawler.frontierservice.frontier.domain.model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Data
-public class Threshold {
-    @Min(1) private long days;
-    @NotNull private BigDecimal multiplier;
+public record UpdatePriorityThreshold(
+
+        @Min(1)
+        @NotNull
+        Long days,
+
+        @NotNull
+        BigDecimal multiplier
+
+) {
 }

@@ -1,7 +1,7 @@
 package at.hypercrawler.frontierservice.frontier.domain.service.metric;
 
 import at.hypercrawler.frontierservice.config.MetricProperties;
-import at.hypercrawler.frontierservice.frontier.domain.model.Threshold;
+import at.hypercrawler.frontierservice.frontier.domain.model.UpdatePriorityThreshold;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -33,9 +33,9 @@ public class UpdateEvaluator implements Evaluator {
       long differenceInDays = calculateTimeDifferenceInDays(lastModified);
       log.info("Difference in days since now for url: {} is: {}", address, differenceInDays);
 
-      for (Threshold threshold : metricProperties.getThresholds()) {
-        if (differenceInDays < threshold.getDays()) {
-          return threshold.getMultiplier();
+      for (UpdatePriorityThreshold threshold : metricProperties.thresholds()) {
+        if (differenceInDays < threshold.days()) {
+          return threshold.multiplier();
         }
       }
 

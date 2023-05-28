@@ -22,7 +22,7 @@ public class PriorityClassifier {
     }
 
     public int evaluatePriority(URL address) {
-        BigDecimal priority = BigDecimal.valueOf(metricProperties.getBasePriority());
+        BigDecimal priority = BigDecimal.valueOf(metricProperties.basePriority());
 
         for (Evaluator evaluator : evaluators) {
             BigDecimal evaluatePriority = evaluator.evaluatePriority(address);

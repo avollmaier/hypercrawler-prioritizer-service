@@ -27,7 +27,7 @@ public class ManagerClient {
     public Mono<StatusResponse> getCrawlerStatusById(UUID crawlerId) {
         return webClient
                 .get()
-                .uri(clientProperties.getManagerServiceUri() + MANAGER_ROOT_API + crawlerId + MANAGER_STATUS_API)
+                .uri(clientProperties.managerServiceUri() + MANAGER_ROOT_API + crawlerId + MANAGER_STATUS_API)
                 .retrieve()
                 .bodyToMono(StatusResponse.class)
                 .timeout(Duration.ofSeconds(3), Mono.empty())
