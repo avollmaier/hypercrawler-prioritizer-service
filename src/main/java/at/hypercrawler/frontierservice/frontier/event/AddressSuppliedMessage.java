@@ -1,4 +1,4 @@
-package at.hypercrawler.frontierservice.event;
+package at.hypercrawler.frontierservice.frontier.event;
 
 import java.net.URL;
 import java.util.UUID;

@@ -1,6 +1,6 @@
-package at.hypercrawler.frontierservice.domain.service.metric;
+package at.hypercrawler.frontierservice.frontier.domain.service.metric;
 
-import at.hypercrawler.frontierservice.domain.config.MetricProperties;
+import at.hypercrawler.frontierservice.config.MetricProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

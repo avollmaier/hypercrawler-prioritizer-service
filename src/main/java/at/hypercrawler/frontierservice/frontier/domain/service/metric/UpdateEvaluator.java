@@ -1,11 +1,9 @@
-package at.hypercrawler.frontierservice.domain.service.metric;
+package at.hypercrawler.frontierservice.frontier.domain.service.metric;
 
-import at.hypercrawler.frontierservice.domain.config.MetricProperties;
-import at.hypercrawler.frontierservice.domain.model.Threshold;
-
+import at.hypercrawler.frontierservice.config.MetricProperties;
+import at.hypercrawler.frontierservice.frontier.domain.model.Threshold;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.math.BigDecimal;
