@@ -60,7 +60,7 @@ class ManagerClientTest {
     }
 
     @Test
-    void whenCrawlerExists_thenReturnEmpty() {
+    void whenCrawlerNotExists_thenReturnEmpty() {
         UUID crawlerId = UUID.randomUUID();
 
         MockResponse mockResponse = new MockResponse()

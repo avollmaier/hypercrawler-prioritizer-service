@@ -72,8 +72,31 @@ class PrioritizerMessageTest {
 
     }
 
+
     @Test
     void whenPrioritizeWithStoppedCrawler_thenNoMessageSend() throws IOException {
+
+        URL address = new URL("http://www.google.com");
+        UUID uuid = UUID.randomUUID();
+
+        when(managerClient.getCrawlerStatusById(uuid)).then(invocation -> Mono.just(new StatusResponse(CrawlerStatus.STOPPED)));
+
+        Function<Flux<AddressSuppliedMessage>, Flux<Message<AddressPrioritizedMessage>>> prioritize =
+
+                catalog.lookup(Function.class, "prioritize");
+
+
+        Flux<AddressSuppliedMessage> addressSupplyMessageFlux = Flux.just(new AddressSuppliedMessage(uuid, address));
+        StepVerifier.create(prioritize.apply(addressSupplyMessageFlux))
+                .expectNextCount(0)
+                .verifyComplete();
+
+        assertNull(output.receive());
+
+    }
+
+    @Test
+    void whenPrioritizeWithUnknownCrawler_thenNoMessageSend() throws IOException {
         URL address = new URL("http://www.google.com");
 
         Function<Flux<AddressSuppliedMessage>, Flux<Message<AddressPrioritizedMessage>>> prioritize =
