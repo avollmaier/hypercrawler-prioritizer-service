@@ -42,7 +42,7 @@ public class PrioritizerService {
                 .filter(Boolean::booleanValue)
                 .flatMap(running -> Mono.just(evaluatePriority(address)))
                 .flatMap(priority -> Mono.just(publishAddressPrioritizeEvent(crawlerId, priority, address)))
-                .map(Message::getPayload);
+                .map(message -> new AddressPrioritizedMessage(crawlerId, address));
     }
 
     private Message<AddressPrioritizedMessage> publishAddressPrioritizeEvent(UUID crawlerId, int priority, URL address) {
@@ -51,7 +51,7 @@ public class PrioritizerService {
         )).setHeader(PRIORITY_HEADER, priority).build();
 
         log.info("Sending data with address {} of crawler with id: {}", address, crawlerId);
-        var result = streamBridge.send(PRIORITIZE_ADDRESS_OUT, addressPrioritizeMessage);
+        boolean result = streamBridge.send(PRIORITIZE_ADDRESS_OUT, addressPrioritizeMessage);
         log.info("Result of sending address {} for crawler with id: {} is {}", address, crawlerId, result);
 
         return addressPrioritizeMessage;
