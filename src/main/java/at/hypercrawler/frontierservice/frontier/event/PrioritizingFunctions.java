@@ -21,7 +21,7 @@ public class PrioritizingFunctions {
     @Bean
     public Consumer<Flux<AddressSuppliedMessage>> prioritize() {
         return flux -> prioritizerService.consumeAddressSuppliedEvent(flux)
-                .doOnNext(e -> log.info("The address {} of cralwer with id {} is prioritized", e.address(), e.crawlerId()))
+                .doOnNext(e -> log.info("The address {} of crawler with id {} is prioritized", e.address(), e.crawlerId()))
                 .subscribe();
     }
 

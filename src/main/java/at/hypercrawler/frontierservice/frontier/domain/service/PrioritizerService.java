@@ -14,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,15 +35,17 @@ public class PrioritizerService {
 
 
     public Flux<AddressPrioritizedMessage> consumeAddressSuppliedEvent(Flux<AddressSuppliedMessage> flux) {
-        return flux.flatMap(addressSuppliedMessage -> prioritizeAddress(addressSuppliedMessage.crawlerId(), addressSuppliedMessage.address()));
+        return flux.flatMap(addressSuppliedMessage -> prioritizeAddresses(addressSuppliedMessage.crawlerId(), addressSuppliedMessage.address()));
     }
 
-    private Mono<AddressPrioritizedMessage> prioritizeAddress(UUID crawlerId, URL address) {
+    private Flux<AddressPrioritizedMessage> prioritizeAddresses(UUID crawlerId, List<URL> addresses) {
         return isCrawlerRunning(crawlerId)
                 .filter(Boolean::booleanValue)
-                .flatMap(running -> Mono.just(evaluatePriority(address)))
-                .flatMap(priority -> Mono.just(publishAddressPrioritizeEvent(crawlerId, priority, address)))
-                .map(message -> new AddressPrioritizedMessage(crawlerId, address));
+                .map(address -> addresses)
+                .flatMapIterable(address -> address)
+                .flatMap(address -> Mono.just(publishAddressPrioritizeEvent(crawlerId, priorityClassifier.evaluatePriority(address), address)))
+                .map(Message::getPayload)
+                .doOnError(throwable -> log.error("Error while prioritizing addresses", throwable));
     }
 
     private Message<AddressPrioritizedMessage> publishAddressPrioritizeEvent(UUID crawlerId, int priority, URL address) {
@@ -59,11 +62,9 @@ public class PrioritizerService {
 
     private Mono<Boolean> isCrawlerRunning(UUID crawlerId) {
         return managerClient.getCrawlerStatusById(crawlerId)
-                .map(statusResponse -> statusResponse.status() == CrawlerStatus.STARTED)
-                .defaultIfEmpty(Boolean.FALSE);
+                .mapNotNull(statusResponse -> statusResponse.status() == CrawlerStatus.STARTED)
+                .defaultIfEmpty(Boolean.FALSE)
+                .onErrorReturn(Boolean.FALSE);
     }
 
-    public int evaluatePriority(URL address) {
-        return priorityClassifier.evaluatePriority(address);
-    }
 }

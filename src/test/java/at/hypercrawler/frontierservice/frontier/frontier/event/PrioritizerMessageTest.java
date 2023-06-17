@@ -22,6 +22,7 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -62,7 +63,7 @@ class PrioritizerMessageTest {
                 catalog.lookup(Function.class, "prioritize");
 
 
-        Flux<AddressSuppliedMessage> addressSupplyMessageFlux = Flux.just(new AddressSuppliedMessage(uuid, address));
+        Flux<AddressSuppliedMessage> addressSupplyMessageFlux = Flux.just(new AddressSuppliedMessage(uuid, Collections.singletonList(address)));
         StepVerifier.create(prioritize.apply(addressSupplyMessageFlux))
                 .expectNextCount(0)
                 .verifyComplete();
@@ -86,7 +87,7 @@ class PrioritizerMessageTest {
                 catalog.lookup(Function.class, "prioritize");
 
 
-        Flux<AddressSuppliedMessage> addressSupplyMessageFlux = Flux.just(new AddressSuppliedMessage(uuid, address));
+        Flux<AddressSuppliedMessage> addressSupplyMessageFlux = Flux.just(new AddressSuppliedMessage(uuid, Collections.singletonList(address)));
         StepVerifier.create(prioritize.apply(addressSupplyMessageFlux))
                 .expectNextCount(0)
                 .verifyComplete();
@@ -103,7 +104,7 @@ class PrioritizerMessageTest {
                 catalog.lookup(Function.class, "prioritize");
 
 
-        Flux<AddressSuppliedMessage> addressSupplyMessageFlux = Flux.just(new AddressSuppliedMessage(UUID.randomUUID(), address));
+        Flux<AddressSuppliedMessage> addressSupplyMessageFlux = Flux.just(new AddressSuppliedMessage(UUID.randomUUID(), Collections.singletonList(address)));
         StepVerifier.create(prioritize.apply(addressSupplyMessageFlux))
                 .expectNextCount(0)
                 .verifyComplete();
