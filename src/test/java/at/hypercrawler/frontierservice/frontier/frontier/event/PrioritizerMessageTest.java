@@ -6,9 +6,7 @@ import at.hypercrawler.frontierservice.manager.CrawlerStatus;
 import at.hypercrawler.frontierservice.manager.ManagerClient;
 import at.hypercrawler.frontierservice.manager.StatusResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,6 +35,7 @@ class PrioritizerMessageTest {
 
     @MockBean
     ManagerClient managerClient;
+
     @Autowired
     private FunctionCatalog catalog;
     @Autowired
@@ -44,11 +43,6 @@ class PrioritizerMessageTest {
 
     @Autowired
     private OutputDestination output;
-
-    @BeforeEach
-    void setUp() {
-        Mockito.mock();
-    }
 
     @Test
     void whenPrioritizeWithRunningCrawler_thenMessageSend() throws IOException {
