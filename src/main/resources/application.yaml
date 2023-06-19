@@ -32,6 +32,13 @@ hypercrawler:
 spring:
   application:
     name: frontier-service
+  data:
+    mongodb:
+      username: admin
+      database: admin
+      password: admin
+      port: 27017
+      host: hypercrawler-mongo
   lifecycle:
     timeout-per-shutdown-phase: 15s
   config:

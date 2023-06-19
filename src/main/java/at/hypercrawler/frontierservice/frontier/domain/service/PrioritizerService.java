@@ -1,5 +1,7 @@
 package at.hypercrawler.frontierservice.frontier.domain.service;
 
+import at.hypercrawler.frontierservice.frontier.domain.model.Page;
+import at.hypercrawler.frontierservice.frontier.domain.repository.FrontierRepository;
 import at.hypercrawler.frontierservice.frontier.domain.service.metric.PriorityClassifier;
 import at.hypercrawler.frontierservice.frontier.event.AddressPrioritizedMessage;
 import at.hypercrawler.frontierservice.frontier.event.AddressSuppliedMessage;
@@ -27,10 +29,13 @@ public class PrioritizerService {
     private final ManagerClient managerClient;
     private final StreamBridge streamBridge;
 
-    public PrioritizerService(PriorityClassifier priorityClassifier, ManagerClient managerClient, StreamBridge streamBridge) {
+    private final FrontierRepository frontierRepository;
+
+    public PrioritizerService(PriorityClassifier priorityClassifier, ManagerClient managerClient, StreamBridge streamBridge, FrontierRepository frontierRepository) {
         this.priorityClassifier = priorityClassifier;
         this.managerClient = managerClient;
         this.streamBridge = streamBridge;
+        this.frontierRepository = frontierRepository;
     }
 
 
@@ -41,9 +46,9 @@ public class PrioritizerService {
     private Flux<AddressPrioritizedMessage> prioritizeAddresses(UUID crawlerId, List<URL> addresses) {
         return isCrawlerRunning(crawlerId)
                 .filter(Boolean::booleanValue)
-                .map(address -> addresses)
+                .flatMap(a -> filterAlreadyCrawled(addresses))
                 .flatMapIterable(address -> address)
-                .flatMap(address -> Mono.just(publishAddressPrioritizeEvent(crawlerId, priorityClassifier.evaluatePriority(address), address)))
+                .flatMap(address -> persistAndSendMessage(crawlerId, address))
                 .map(Message::getPayload)
                 .doOnError(throwable -> log.error("Error while prioritizing addresses", throwable));
     }
@@ -60,6 +65,14 @@ public class PrioritizerService {
         return addressPrioritizeMessage;
     }
 
+    private Mono<Message<AddressPrioritizedMessage>> persistAndSendMessage(UUID crawlerId, URL address) {
+        int priority = priorityClassifier.evaluatePriority(address);
+        return frontierRepository.save(new Page(address, priority, crawlerId))
+                .map(m -> publishAddressPrioritizeEvent(crawlerId, priority, address))
+                .doOnNext(page -> log.info("Page {} is persisted", page))
+                .doOnError(throwable -> log.error("Error while persisting page", throwable));
+    }
+
     private Mono<Boolean> isCrawlerRunning(UUID crawlerId) {
         return managerClient.getCrawlerStatusById(crawlerId)
                 .mapNotNull(statusResponse -> statusResponse.status() == CrawlerStatus.STARTED)
@@ -67,4 +80,20 @@ public class PrioritizerService {
                 .onErrorReturn(Boolean.FALSE);
     }
 
+    private Mono<Boolean> isAlreadyCrawled(URL url) {
+        return frontierRepository.existsById(url)
+                .mapNotNull(exists -> exists)
+                .doOnNext(exists -> log.info("Url {} is crawled: {}", url, exists))
+                .defaultIfEmpty(Boolean.FALSE)
+                .doOnError(throwable -> log.error("Error while checking if url is already crawled", throwable))
+                .onErrorReturn(Boolean.FALSE);
+    }
+
+    private Mono<List<URL>> filterAlreadyCrawled(List<URL> urls) {
+        return Flux.fromIterable(urls)
+                .filterWhen(url -> isAlreadyCrawled(url).map(exists -> !exists))
+                .distinct()
+                .doOnNext(url -> log.info("Url {} is not crawled yet", url))
+                .collectList();
+    }
 }
