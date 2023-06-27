@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -26,7 +26,7 @@ public class UpdateEvaluator implements Evaluator {
   @Override
   public BigDecimal evaluatePriority(URL address) {
     try {
-      HttpURLConnection connection = (HttpURLConnection) address.openConnection();
+      URLConnection connection = address.openConnection();
       long lastModified = connection.getLastModified();
 
 
