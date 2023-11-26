@@ -7,17 +7,18 @@ import at.hypercrawler.frontierservice.frontier.event.AddressPrioritizedMessage;
 import at.hypercrawler.frontierservice.frontier.event.AddressSuppliedMessage;
 import at.hypercrawler.frontierservice.manager.CrawlerStatus;
 import at.hypercrawler.frontierservice.manager.ManagerClient;
+import java.net.URL;
+import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.net.URL;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -39,6 +40,8 @@ public class PrioritizerService {
     }
 
 
+    @Transactional
+    @Retryable
     public Flux<AddressPrioritizedMessage> consumeAddressSuppliedEvent(Flux<AddressSuppliedMessage> flux) {
         return flux.flatMap(addressSuppliedMessage -> prioritizeAddresses(addressSuppliedMessage.crawlerId(), addressSuppliedMessage.address()));
     }
