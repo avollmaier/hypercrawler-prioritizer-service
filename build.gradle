@@ -65,7 +65,14 @@ tasks.named('jar') {
 
 tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder:base'
-    environment = ['BP_LIVE_RELOAD_ENABLED': 'true']
+
+    if(System.getenv('NATIVE_IMAGE_ENABLED') == 'enabled'){
+        println("bootBuildImage is building a native image")
+        environment = ['BP_NATIVE_IMAGE': 'true']
+    }else {
+        environment = ['BP_LIVE_RELOAD_ENABLED': 'true']
+    }
+
     imageName = "${project.name}"
 
     docker {
@@ -76,3 +83,4 @@ tasks.named('bootBuildImage') {
         }
     }
 }
+
