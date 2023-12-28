@@ -30,6 +30,14 @@ hypercrawler:
 
 
 spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 100
+      minimum-idle: 5
+      connection-timeout: 10000
+      allow-pool-suspension:
+      idle-timeout: 100
+      max-lifetime: 120000
   application:
     name: frontier-service
   data:
@@ -72,6 +80,16 @@ spring:
 logging:
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              ReactiveMongoTemplate: TRACE
+      hibernate:
+        TRACE
+
 
 info:
   system: hypercrawler

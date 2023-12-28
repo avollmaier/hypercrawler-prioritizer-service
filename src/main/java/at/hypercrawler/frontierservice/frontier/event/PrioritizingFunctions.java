@@ -1,6 +1,6 @@
 package at.hypercrawler.frontierservice.frontier.event;
 
-import at.hypercrawler.frontierservice.frontier.domain.service.PrioritizerService;
+import at.hypercrawler.frontierservice.frontier.domain.service.FrontierService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,16 +12,15 @@ import java.util.function.Consumer;
 @Configuration
 public class PrioritizingFunctions {
 
-    private final PrioritizerService prioritizerService;
+    private final FrontierService frontierService;
 
-    public PrioritizingFunctions(PrioritizerService prioritizerService) {
-        this.prioritizerService = prioritizerService;
+    public PrioritizingFunctions(FrontierService frontierService) {
+        this.frontierService = frontierService;
     }
 
     @Bean
     public Consumer<Flux<AddressSuppliedMessage>> prioritize() {
-        return flux -> prioritizerService.consumeAddressSuppliedEvent(flux)
-                .doOnNext(e -> log.info("The address {} of crawler with id {} is prioritized", e.address(), e.crawlerId()))
+        return flux -> frontierService.consumeAddressSuppliedEvent(flux)
                 .subscribe();
     }
 
